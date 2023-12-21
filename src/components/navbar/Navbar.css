@@ -1,0 +1,52 @@
+#homeMainSec {
+    background: saddlebrown;
+}
+#homeMainSec article{
+    display: flex;
+    width: 100%;
+}
+#homeMainSec .firstDiv{
+    flex-basis: 50%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 10px;
+}
+#homeMainSec .secondDiv{
+    flex-basis: 50%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.firstDiv img{
+    height: 40px;
+    background-color: darkorange;
+    border-radius: 5px;
+}
+.firstDiv .logoAside{
+    flex-basis: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.firstDiv .searchAside{
+    flex-basis: 70%;
+
+}
+.searchAside input{
+    width: 100%;
+    padding: 5px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+}
+.secondDiv aside{
+    text-transform: uppercase;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+}
+.secondDiv aside a{
+    text-decoration: none;
+    color: unset;
+}

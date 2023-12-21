@@ -1,0 +1,43 @@
+#mainDivTag{
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 10px;
+  }
+  .antdCard{
+    display: flex;
+    height: 200px;
+    width: 200px;
+    border: 1px solid burlywood;
+    align-items: center;
+    justify-content: center;
+    background: floralwhite;
+    transition: all ease 0.5s;
+  }
+  .antdCard:hover{
+    background: antiquewhite;
+  }
+  .antdCard .ant-card-body{
+    width: 100%;
+  }
+  .metaTag{
+    padding: 5px;
+    overflow: hidden;
+  }
+  .searchTagParent{
+    width: 100%;
+    display: flex;
+    padding: 10px;
+    justify-content: space-around;
+    gap: 20px;
+  }
+  .searchTag{
+    flex-basis: 40%;
+  }
+  .selectTag{
+    flex-basis: 40%;
+  }
+  .popoverMainDiv{
+    font-size: 10px;
+  }
