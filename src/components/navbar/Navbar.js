@@ -11,15 +11,11 @@ const Navbar=()=>{
           key: '0',
         },
         {
+            type: 'divider',
+        },
+        {
           label: <Link to='/country'>Countries</Link>,
           key: '1',
-        },
-        {
-          type: 'divider',
-        },
-        {
-          label: '3rd menu item',
-          key: '3',
         },
       ];
 

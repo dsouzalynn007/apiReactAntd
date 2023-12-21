@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Card, Image, Popover, Select } from "antd";
+import { Image, Pagination, Popover, Select } from "antd";
 import Search from "antd/es/input/Search";
-import Meta from "antd/es/card/Meta";
 import axios from "axios";
 import '../../display/Display.css'
+import DisplayCard from "../../display/Display";
 
 const CountryApi=()=>{
     
     const [InitialData, setInitialData]=useState([])
     const [Data, setData]=useState(InitialData)
-  console.log(Data)
+    const [SearchValue, setSearchValue]=useState(undefined)
+    const [SelectValue, setSelectValue]=useState(undefined)
+    const [PageSize, setPageSize]=useState(30)
+    const [DataLength, setDataLength]=useState(0)
+    console.log(Data)
   
     const SelectOptions = [
       {
@@ -17,16 +21,16 @@ const CountryApi=()=>{
         label: 'Alphabetically',
       },
       {
-        value: 'decendingid',
-        label: 'LoginID Decending',
+        value: 'areaWise',
+        label: 'Area wise',
       },
       {
-        value: 'user',
-        label: 'All Users',
+        value: 'asian',
+        label: 'Asian countries',
       },
       {
-        value: 'organization',
-        label: 'Organization',
+        value: 'euroCurrency',
+        label: 'Euro Currency',
       },
     ]
   
@@ -35,39 +39,55 @@ const CountryApi=()=>{
       const data=response.data
       setInitialData(data)
       setData(data)
+      setDataLength(data?.length)
+      setPageSize(Math.ceil(data?.length/5))
     }
     
     const onSelectFunc=(e)=>{
+        setSelectValue(e)
+        setSearchValue(undefined)
         switch(e){
             case SelectOptions[0].value : {
-                let filterData=InitialData?.sort((a,b)=>a.login.localeCompare(b.login))
+                let filterData=InitialData?.sort((a,b)=>a?.name?.common?.localeCompare(b?.name?.common))
                 setData([...filterData])
+                setDataLength(filterData?.length)
                 break
             } case SelectOptions[1].value : {
-                let filterData=InitialData?.sort((a,b)=>b.id-a.id)
+                let filterData=InitialData?.sort((a,b)=>a?.area-b?.area)
                 setData([...filterData])
+                setDataLength(filterData?.length)
                 break
             } case SelectOptions[2].value : {
-                let filterData=InitialData?.filter((ele)=>ele.type==='User')
+                let filterData=InitialData?.filter((ele)=>ele?.continents[0]==='Asia')
                 setData([...filterData])
+                setDataLength(filterData?.length)
                 break
             } case SelectOptions[3].value : {
-                let filterData=InitialData?.filter((ele)=>ele.type==='Organization')
+                let filterData=InitialData?.filter((ele)=>ele?.currencies?.EUR?.name==='Euro')
                 setData([...filterData])
+                setDataLength(filterData?.length)
                 break
             } default : setData(Data) 
         }
     }
   
     const onSearchFunc=(e)=>{
+        setSearchValue(e.target.value)
+        setSelectValue(undefined)
       let filterData=InitialData?.filter((ele)=>{
         let searchVal=e.target.value.toLowerCase()
-        let filterVal=ele?.login.toLowerCase()
+        let filterVal=ele?.name?.common?.toLowerCase()
         return filterVal.includes(searchVal);
       })
       setData(filterData)
+      setDataLength(filterData?.length)
     }
   
+    const PaginationFunc=(page,size)=>{
+        setPageSize(size)
+        setData(InitialData.slice((page-1)*size,page*size))
+    }
+    
     useEffect(()=>{
       fetchFunc()
     },[])
@@ -112,11 +132,13 @@ const CountryApi=()=>{
           onChange={onSelectFunc}
           allowClear
           onClear={fetchFunc}
+          value={SelectValue}
       />
           <Search
             className="searchTag"
             onChange={onSearchFunc}
             placeholder="Search here"
+            value={SearchValue}
           />
         </div>
         <div id="mainDivTag">
@@ -127,35 +149,35 @@ const CountryApi=()=>{
               preview={false}
             /> 
             : 
-          Data.map((ele,ind)=>{
+          Data.slice(0,PageSize).map((ele,ind)=>{
             return(
               <Popover
                 // title="Complete details"
                 content={PopOverComp(ele)}
                 placement="right"
                 >
-              <Card
-                className="antdCard"
-                key={ind}
-                hoverable
-              >
-                <Meta 
-                  className="metaTag"
-                  title={ele?.name?.common?.toUpperCase()}
-                  description={ele?.area}
-                />
-                <Image
-                  height={100}
-                  src={ele?.flags?.png}
-                  alt={ele?.name?.common}
-                  preview={false}
-                />
-              </Card>
+                    <DisplayCard
+                        Data={Data}
+                        title={ele?.name?.common?.toUpperCase()}
+                        description={ele?.area}
+                        src={ele?.flags?.png}
+                        alt={ele?.name?.common}
+                        index={ind}
+                    />
               </Popover>
             )
           })
         }
       </div>
+    { !(DataLength<PageSize) &&
+        <Pagination
+            className="paginationTag"
+            onChange={PaginationFunc}
+            total={DataLength}
+            defaultPageSize={PageSize}
+            showTotal={(total,range) => `${range[0]}-${range[1]}/${total}`}
+        />
+    }
       </>
   
     );
