@@ -4,7 +4,7 @@ import './Homepage.css'
 const Homepage=()=>{
     return(
         <div>
-
+            HOME
         </div>
     )
 }

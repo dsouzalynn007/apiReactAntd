@@ -4,16 +4,18 @@ import Search from "antd/es/input/Search";
 import axios from "axios";
 import '../../display/Display.css'
 import DisplayCard from "../../display/Display";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const CountryApi=()=>{
-    
+
+    const navigate=useNavigate()
+    const location=useLocation()
     const [InitialData, setInitialData]=useState([])
     const [Data, setData]=useState(InitialData)
     const [SearchValue, setSearchValue]=useState(undefined)
     const [SelectValue, setSelectValue]=useState(undefined)
     const [PageSize, setPageSize]=useState(30)
     const [DataLength, setDataLength]=useState(0)
-    console.log(Data)
   
     const SelectOptions = [
       {
@@ -40,7 +42,6 @@ const CountryApi=()=>{
       setInitialData(data)
       setData(data)
       setDataLength(data?.length)
-      setPageSize(Math.ceil(data?.length/5))
     }
     
     const onSelectFunc=(e)=>{
@@ -92,7 +93,7 @@ const CountryApi=()=>{
       fetchFunc()
     },[])
   
-    const PopOverComp=(ele)=>{
+    const PopOverComp=(ele)=>{         
       return(
         <div>
           {
@@ -121,6 +122,14 @@ const CountryApi=()=>{
       )
     }
   
+    const onClickPop=(val)=>{
+        InitialData.map(ele=>{
+            if(val===ele?.ccn3){
+                navigate('/result',{state:{objData:ele,prePath:location.pathname}})
+            }
+        })
+    }
+
     return (
       <>
         <h2>Countries</h2>
@@ -151,20 +160,25 @@ const CountryApi=()=>{
             : 
           Data.slice(0,PageSize).map((ele,ind)=>{
             return(
-              <Popover
+                <div
+                className="allDisplayMain"
+                onClick={()=>onClickPop(ele?.ccn3)}
+                >
+                <Popover
                 // title="Complete details"
-                content={PopOverComp(ele)}
+                // content={PopOverComp(ele)}
                 placement="right"
                 >
-                    <DisplayCard
-                        Data={Data}
+                    <><DisplayCard
                         title={ele?.name?.common?.toUpperCase()}
                         description={ele?.area}
                         src={ele?.flags?.png}
                         alt={ele?.name?.common}
                         index={ind}
-                    />
+                    /></>
               </Popover>
+                </div>
+              
             )
           })
         }

@@ -1,0 +1,22 @@
+.indiDisplayMain{
+    margin: 15px;
+    height: 85vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.indiDisplayMain > .antdCard{
+    height: 75vh;
+    width: 75%;
+    min-width: 50%;
+    max-width: 100%;
+}
+.antdCard .ant-card-body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.indiDisplayMain .imageTag{
+    height: 300px;
+}

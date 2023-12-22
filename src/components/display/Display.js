@@ -3,7 +3,7 @@ import { Card, Image} from "antd";
 import Meta from "antd/es/card/Meta";
 import './Display.css'
 
-const Display=({Data,title,description,src,alt,index})=>{
+const Display=({title,description,src,alt,index})=>{
 
     return (
       <>
@@ -18,7 +18,7 @@ const Display=({Data,title,description,src,alt,index})=>{
                 description={description}
             />
             <Image
-                height={100}
+                className="imageTag"
                 src={src}
                 alt={alt}
                 preview={false}

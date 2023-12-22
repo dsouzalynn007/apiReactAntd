@@ -5,6 +5,7 @@ import Homepage from "./components/home/Homepage";
 import Navbar from "./components/navbar/Navbar";
 import CountryApi from "./components/apis/countryApi/CountryApi";
 import GithubApi from "./components/apis/githubApi/GithubApi";
+import IndiDisplay from "./components/display/IndiDisplay";
 
 function App() {
   return(
@@ -15,6 +16,7 @@ function App() {
           <Route path="/" element={<Homepage/>}/>
           <Route path="/people" element={<GithubApi/>}/>
           <Route path="/country" element={<CountryApi/>}/>
+          <Route path="/result" element={<IndiDisplay/>}/>
         </Routes>
       </BrowserRouter>
     </div>

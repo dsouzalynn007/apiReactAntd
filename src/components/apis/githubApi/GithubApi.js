@@ -4,14 +4,17 @@ import Search from "antd/es/input/Search";
 import axios from "axios";
 import '../../display/Display.css'
 import DisplayCard from "../../display/Display";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const GithubApi=()=>{
     
+    const navigate=useNavigate()
+    const location=useLocation()
     const [InitialData, setInitialData]=useState([])
     const [Data, setData]=useState(InitialData)
     const [SearchValue, setSearchValue]=useState(undefined)
     const [SelectValue, setSelectValue]=useState(undefined)
-    const [PageSize, setPageSize]=useState(0)
+    const [PageSize, setPageSize]=useState(10)
     const [DataLength, setDataLength]=useState(0)
 
     const SelectOptions = [
@@ -39,7 +42,6 @@ const GithubApi=()=>{
       setInitialData(data)
       setData(data)
       setDataLength(data?.length)
-      setPageSize(Math.ceil(data?.length/3))
     }
     
     const onSelectFunc=(e)=>{
@@ -120,6 +122,14 @@ const GithubApi=()=>{
       )
     }
   
+    const onClickPop=(val)=>{
+        InitialData.map(ele=>{
+            if(val===ele?.id){
+                navigate('/result',{state:{objData:ele,prePath:location.pathname}})
+            }
+        })
+    }
+
     return (
       <>
         <h2>People</h2>
@@ -150,9 +160,13 @@ const GithubApi=()=>{
             : 
           Data.slice(0,PageSize).map((ele,ind)=>{
             return(
+            <div
+            className="allDisplayMain"
+            onClick={()=>onClickPop(ele?.id)}
+            >
               <Popover
                 // title="Complete details"
-                content={PopOverComp(ele)}
+                // content={PopOverComp(ele)}
                 placement="right"
                 >
                     
@@ -164,6 +178,7 @@ const GithubApi=()=>{
                         index={ind}
                     /></>
               </Popover>
+            </div>
             )
           })
         }
